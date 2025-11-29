@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EnotesApiServiceApplication {
 
 	public static void main(String[] args) {
+		
+		System.out.println("run project....");
 		SpringApplication.run(EnotesApiServiceApplication.class, args);
 	}
 
