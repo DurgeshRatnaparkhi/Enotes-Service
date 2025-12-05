@@ -1,15 +1,22 @@
 package com.becoder.service;
 
-import java.util.List;
+	import java.util.List;
+	import com.becoder.dto.CategoryDto;
+    import com.becoder.dto.CategoryResponse;
 
-import com.becoder.entity.Category;
 
 
-public interface CategoryService {
+	public interface CategoryService {
+
+	  public   Boolean saveCategoryDto(CategoryDto categoryDto);
+
+	   public  List<CategoryDto> getAllcategory();
+
+	   public List<CategoryResponse>getIsActive();
 	
-	public Boolean saveCategory(Category category);  //save data
-	
-	
-	public List<Category> getAllcategory();
 
-}
+
+	}
+
+
+
