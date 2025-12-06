@@ -1,21 +1,15 @@
 package com.becoder.dto;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import com.becoder.entity.Category;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+@Repository
+public interface CategoryResponse extends JpaRepository<Category, Integer> {
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CategoryResponse {
-	
-    private Integer id;
-	
-	private String name;
-	
-	private String description;
-	
+    List<Category> findByIsActiveTrue();
 
+    
+    Optional<Category> findByIdAndIsDeletedFalse(Integer id);
 }

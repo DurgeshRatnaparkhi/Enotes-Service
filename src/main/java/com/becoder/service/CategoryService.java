@@ -4,16 +4,18 @@ package com.becoder.service;
 	import com.becoder.dto.CategoryDto;
     import com.becoder.dto.CategoryResponse;
 
-
-
 	public interface CategoryService {
 
-	  public   Boolean saveCategoryDto(CategoryDto categoryDto);
+	 
+	  public Boolean saveCategoryDto(CategoryDto categoryDto); //save Category
+		
+	   public  List<CategoryDto> getAllcategory();   //getAll Category
 
-	   public  List<CategoryDto> getAllcategory();
+	   public List<CategoryResponse>getIsActive();     //IsActive id,name,description show
 
-	   public List<CategoryResponse>getIsActive();
-	
+	   public CategoryDto getCategoryDtoById(Integer id);   //get Category Id
+	  
+	   public  Boolean deleteCategoryById(Integer id);        //delete category
 
 
 	}

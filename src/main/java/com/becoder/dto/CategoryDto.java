@@ -19,6 +19,8 @@ package com.becoder.dto;
 	    private String description;
 
 	    private Boolean isActive;
+	    
+	    //private Boolean isDeleted;
 
 	    private Integer createdBy;
 
