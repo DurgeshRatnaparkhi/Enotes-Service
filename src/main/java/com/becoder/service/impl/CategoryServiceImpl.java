@@ -2,6 +2,8 @@ package com.becoder.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private ModelMapper Mapper;
+    
 
     @Override
     public Boolean saveCategoryDto(CategoryDto categoryDto) {
@@ -46,16 +49,19 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+    
+    
     @Override
     public List<CategoryDto> getAllcategory() {
-    	
-        List<Category> categories = categoryRepository.findAll();
+    
+        List<Category> categories = categoryRepository.findByIsDeletedFalse();
 
        
         List<CategoryDto> categoryDtolist = categories.stream().map(cat -> Mapper.map(cat, CategoryDto.class)).toList();
         
 		return categoryDtolist;
     }
+    
 
 
 	@Override
@@ -68,8 +74,38 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		return catrgorylist;
 	}
-    
-    
+	
+	
+
+	@Override
+	public CategoryDto getCategoryDtoById(Integer id) {
+		
+		Optional<Category> findByCategory = categoryRepository.findByIdAndIsDeletedFalse(id);
+		
+		if(findByCategory.isPresent()) {
+			
+			Category category = findByCategory.get();
+			
+			return Mapper.map(category,CategoryDto.class);
+		}
+			
+		return null;
+	}
+
+	
+	
+	@Override
+	public Boolean deleteCategoryById(Integer id) {
+		
+	    if(categoryRepository.existsById(id)) {
+	    	
+	        categoryRepository.deleteById(id);  // ✔ permanently deletes
+	        
+	        return true;
+	    }
+	    return false;
+	}
+
 }
 
 
