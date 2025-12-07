@@ -54,7 +54,7 @@ public class CategoryController {
 	}
 	
 	
-	@GetMapping("/isactive")
+	@GetMapping("/active")
 	public ResponseEntity<?> getIsActive(){
 		
 		List<CategoryResponse> allCategories = categoryService.getIsActive();

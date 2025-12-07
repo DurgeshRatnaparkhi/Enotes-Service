@@ -1,15 +1,23 @@
 package com.becoder.dto;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import com.becoder.entity.Category;
 
-@Repository
-public interface CategoryResponse extends JpaRepository<Category, Integer> {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    List<Category> findByIsActiveTrue();
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor    // ← हे खूप महत्वाचे आहे (ModelMapper याचा वापर करतो)
+public class CategoryResponse {
 
+    private Integer id;
     
-    Optional<Category> findByIdAndIsDeletedFalse(Integer id);
+    private String name;
+    
+    private String description;
+    
+    private Boolean isActive; 
 }
+

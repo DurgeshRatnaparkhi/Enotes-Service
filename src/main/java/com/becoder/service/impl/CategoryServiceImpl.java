@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
 import com.becoder.dto.CategoryDto;
 import com.becoder.dto.CategoryResponse;
 import com.becoder.entity.Category;
@@ -26,28 +28,70 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Boolean saveCategoryDto(CategoryDto categoryDto) {
     	
-        try
-        {
-            Category category = Mapper.map(categoryDto, Category.class);
+    	Category category = Mapper.map(categoryDto, Category.class);
+    	
+//    	if (ObjectUtils.isEmpty(category.getId())) {
+//    	    category.setIsDeleted(false);
+//    	    category.setCreatedBy(1);
+//    	    category.setCreatedon(new Date());
+//    	    category.setIsActive(true);   // ← ERROR FIXED
+//    	}
+//    
+//    else {
+//        updatecategory(category);
+//    }
+//
+//    Category savecategory = categoryRepository.save(category);
+//
+//    return !ObjectUtils.isEmpty(savecategory);
+//}
+//    
+    	
+    	if(ObjectUtils.isEmpty(category.getId())) {
+    		
+    		category.setIsDeleted(false);
+    		category.setCreatedBy(1);
+    		category.setCreatedon(new Date());
+    		
+    	}
+    	
+    	else 
+   	{
+    		updatecategory(category);
+			
+		}
+    	
+    	Category savecategory = categoryRepository.save(category);
+    	
 
-            category.setIsActive(true);
-            category.setIsDeleted(false);
-            category.setCreatedBy(1);
-            category.setCreatedon(new Date());
+    	if(ObjectUtils.isEmpty(savecategory)) {
+    		
+    		return false;
+    		
+    	}
+    		
+		return true;
+    	
+    }    	
 
-            Category saved = categoryRepository.save(category);
+     private void updatecategory(Category category) {
+		
+    	 Optional<Category>findByid= categoryRepository.findById(category.getId());
+    	 
+    	 if(findByid.isPresent()) {
+    		 
+    		 Category category2 = findByid.get();
+    		 category.setCreatedBy(category2.getCreatedBy());
+    		 category.setCreatedon(category2.getCreatedon());
+    		 category.setIsDeleted(category2.getIsDeleted());
+    		 
+    		 category.setUpdatedBy(1);
+    		 category.setUpdatedon(new Date());
+    	 }
+		
+	}
 
-            return saved != null && saved.getId() != null;
 
-        }
-        
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-            
-            return false;
-        }
-    }
 
     
     
@@ -62,6 +106,16 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryDtolist;
     }
     
+    
+//    @Override
+//    public List<CategoryResponse> getIsActive() {
+//
+//        Optional<Category> categories = categoryRepository.findByIsActiveTrue();
+//
+//        return categories.stream()
+//                .map(cat -> Mapper.map(cat, CategoryResponse.class))
+//                .toList();
+//    }
 
 
 	@Override
@@ -70,9 +124,9 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		 List<Category> categories = categoryRepository.findByIsActiveTrue();
 		 
-		 List<CategoryResponse> catrgorylist = categories.stream().map(cat-> Mapper.map(cat, CategoryResponse.class)).toList();
+		 List<CategoryResponse> list = categories.stream().map(cat-> Mapper.map(cat, CategoryResponse.class)).toList();
 		
-		return catrgorylist;
+		return list;
 	}
 	
 	
@@ -109,26 +163,6 @@ public class CategoryServiceImpl implements CategoryService {
 }
 
 
-//		category.setIsDeleted(false);
-//		category.setCreatedBy(1);
-//		category.setCreatedon(new Date());
-//		
-//		category.setIsActive(true);
-//		category.setIsDeleted(false);
-//		category.setCreatedBy(1);
-//		category.setCreatedon(new Date());
-//
-//		Category savedCategory = categoryRepository.save(category);
-//		
-//		if(ObjectUtils.isEmpty(savedCategory)) {
-//			
-//			return false;
-//			
-//			
-//		}
-//		
-//		return true;
-//	}
-//	
+
 
 

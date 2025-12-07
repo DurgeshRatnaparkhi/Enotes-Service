@@ -28,5 +28,7 @@ public class Category extends BaseModel {
 	
 	private String description;
 	
+	// private Boolean isActive;
+	
 
 }
