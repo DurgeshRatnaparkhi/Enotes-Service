@@ -1,5 +1,4 @@
 package com.becoder.controller;
-//import org.springframework.util.ObjectUtils;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,9 @@ import org.springframework.util.ObjectUtils;
 import com.becoder.dto.CategoryDto;
 import com.becoder.dto.CategoryResponse;
 import com.becoder.service.CategoryService;
+
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
@@ -69,13 +71,14 @@ public class CategoryController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?>getCategoryDetailsById(@PathVariable Integer id){
+	public ResponseEntity<?>getCategoryDetailsById(@PathVariable Integer id) throws Exception{
 		
 		CategoryDto categoryById = categoryService.getCategoryDtoById(id);
 		
 		if (ObjectUtils.isEmpty(categoryById)) {
 			
-			 return new ResponseEntity<>("Category not found with id=" + id,HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Internal Server Error", HttpStatus.NOT_FOUND);
+			 //return new ResponseEntity<>("Category not found with id=" + id,HttpStatus.NOT_FOUND);
 		 }      
 		return new ResponseEntity<>(categoryById,HttpStatus.OK);
 	}

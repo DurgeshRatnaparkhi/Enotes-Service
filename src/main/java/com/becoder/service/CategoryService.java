@@ -13,7 +13,7 @@ package com.becoder.service;
 
 	   public List<CategoryResponse>getIsActive();     //IsActive id,name,description show
 
-	   public CategoryDto getCategoryDtoById(Integer id);   //get Category Id
+	   public CategoryDto getCategoryDtoById(Integer id) throws Exception;   //get Category Id
 	  
 	   public  Boolean deleteCategoryById(Integer id);        //delete category
 

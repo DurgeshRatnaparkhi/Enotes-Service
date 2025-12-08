@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import com.becoder.dto.CategoryDto;
 import com.becoder.dto.CategoryResponse;
 import com.becoder.entity.Category;
+import com.becoder.exception.ResourceNotFoundexception;
 import com.becoder.repository.CategoryRepository;
 import com.becoder.service.CategoryService;
 
@@ -30,23 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     	
     	Category category = Mapper.map(categoryDto, Category.class);
     	
-//    	if (ObjectUtils.isEmpty(category.getId())) {
-//    	    category.setIsDeleted(false);
-//    	    category.setCreatedBy(1);
-//    	    category.setCreatedon(new Date());
-//    	    category.setIsActive(true);   // ← ERROR FIXED
-//    	}
-//    
-//    else {
-//        updatecategory(category);
-//    }
-//
-//    Category savecategory = categoryRepository.save(category);
-//
-//    return !ObjectUtils.isEmpty(savecategory);
-//}
-//    
-    	
+
     	if(ObjectUtils.isEmpty(category.getId())) {
     		
     		category.setIsDeleted(false);
@@ -93,8 +78,6 @@ public class CategoryServiceImpl implements CategoryService {
 
 
 
-    
-    
     @Override
     public List<CategoryDto> getAllcategory() {
     
@@ -107,16 +90,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
     
     
-//    @Override
-//    public List<CategoryResponse> getIsActive() {
-//
-//        Optional<Category> categories = categoryRepository.findByIsActiveTrue();
-//
-//        return categories.stream()
-//                .map(cat -> Mapper.map(cat, CategoryResponse.class))
-//                .toList();
-//    }
-
 
 	@Override
 	public List<CategoryResponse> getIsActive() {
@@ -132,13 +105,14 @@ public class CategoryServiceImpl implements CategoryService {
 	
 
 	@Override
-	public CategoryDto getCategoryDtoById(Integer id) {
+	public CategoryDto getCategoryDtoById(Integer id) throws Exception {
 		
-		Optional<Category> findByCategory = categoryRepository.findByIdAndIsDeletedFalse(id);
-		
-		if(findByCategory.isPresent()) {
+		Category category = categoryRepository.findByIdAndIsDeletedFalse(id)
+				.orElseThrow(()->new ResourceNotFoundexception("Category not found with id=" + id));
+
+		if (!ObjectUtils.isEmpty(category)) {
 			
-			Category category = findByCategory.get();
+			category.getName().toUpperCase();
 			
 			return Mapper.map(category,CategoryDto.class);
 		}
