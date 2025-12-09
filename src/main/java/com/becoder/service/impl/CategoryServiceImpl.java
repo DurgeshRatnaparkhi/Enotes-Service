@@ -15,6 +15,9 @@ import com.becoder.entity.Category;
 import com.becoder.exception.ResourceNotFoundexception;
 import com.becoder.repository.CategoryRepository;
 import com.becoder.service.CategoryService;
+import com.becoder.validation.UtilValidation;
+
+import jakarta.validation.Validation;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -25,9 +28,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private ModelMapper Mapper;
     
+    @Autowired
+    private UtilValidation validation;
+    
 
     @Override
     public Boolean saveCategoryDto(CategoryDto categoryDto) {
+    	
+    	//validation checking
+    	
+    	validation.categoryValidation(categoryDto);
+    	
+    	
     	
     	Category category = Mapper.map(categoryDto, Category.class);
     	
@@ -38,10 +50,10 @@ public class CategoryServiceImpl implements CategoryService {
     		category.setCreatedBy(1);
     		category.setCreatedon(new Date());
     		
-    	}
-    	
-    	else 
-   	{
+    		
+    		
+    	}else{
+    		
     		updatecategory(category);
 			
 		}
@@ -49,13 +61,13 @@ public class CategoryServiceImpl implements CategoryService {
     	Category savecategory = categoryRepository.save(category);
     	
 
-    	if(ObjectUtils.isEmpty(savecategory)) {
+//    	if(ObjectUtils.isEmpty(savecategory)) {
+//    		
+//    		return false;
+//    		
+//    	}
     		
-    		return false;
-    		
-    	}
-    		
-		return true;
+    	return savecategory != null;
     	
     }    	
 

@@ -11,32 +11,38 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	
-	@ExceptionHandler(Exception.class)
-public ResponseEntity<?>handelException(Exception e){
-	
-	log.error("GlobalExceptionHandler :: handelException ::",e.getMessage());
-	
-	return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-}
-	
-	
-	@ExceptionHandler(NullPointerException.class)
-	public ResponseEntity<?>handleNullPointerException(Exception e){
-		
-		log.error("GlobalExceptionHandler :: handleNullPinterException ::",e.getMessage());
-		
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-		
-}
-	
-	
-	@ExceptionHandler(ResourceNotFoundexception.class)
-	public ResponseEntity<?>ResourceNotFoundException(Exception e){
-		
-		log.error("GlobalExceptionHandler :: ResourceNotFoundException ::",e.getMessage());
-		
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-	}
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception e) {
+    	
+        log.error("GlobalExceptionHandler :: handleException :: {}", e.getMessage());
+        
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<?> handleNullPointerException(Exception e) {
+    	
+        log.error("GlobalExceptionHandler :: handleNullPointerException :: {}", e.getMessage());
+        
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        
+    }
+
+    @ExceptionHandler(ResourceNotFoundexception.class)
+    public ResponseEntity<?> ResourceNotFoundException(Exception e) {
+    	
+        log.error("GlobalExceptionHandler :: ResourceNotFoundException :: {}", e.getMessage());
+        
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        
+        
+    }
+
+    @ExceptionHandler(MyValidationException.class)
+    public ResponseEntity<?> handleValidationException(MyValidationException e) {
+        return new ResponseEntity<>(e.getErrors(), HttpStatus.BAD_REQUEST);
+    }
 }
