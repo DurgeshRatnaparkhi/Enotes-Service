@@ -1,10 +1,14 @@
 package com.becoder.entity;
 
 import java.util.Date;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import com.becoder.entity.Category; // ✔ CORRECT
 
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Category extends BaseModel {
 	
 	@Id
