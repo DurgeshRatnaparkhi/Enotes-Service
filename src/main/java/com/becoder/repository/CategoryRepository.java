@@ -11,11 +11,13 @@ import com.becoder.entity.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Integer>{
 
-	List<Category> findByIsActiveTrue();   //custome methodrepository
+	List<Category> findByIsActiveTrue();   //custom method
 
 	Optional<Category> findByIdAndIsDeletedFalse(Integer id);
 	
 	List<Category> findByIsDeletedFalse();
+	
+	Boolean existsByName(String name);
 
   
 }
