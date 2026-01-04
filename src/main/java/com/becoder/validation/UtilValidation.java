@@ -24,7 +24,8 @@ public class UtilValidation {
         // name validation
         if (ObjectUtils.isEmpty(categoryDto.getName())) {
             error.put("name", "name field is empty or null");
-        } else {
+        }
+        else {
             if (categoryDto.getName().length() < 3) {
                 error.put("name", "name length min 3");
             }

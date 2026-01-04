@@ -1,6 +1,7 @@
 package com.becoder.service.impl;
 
 import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,8 @@ import org.springframework.util.ObjectUtils;
 import com.becoder.dto.CategoryDto;
 import com.becoder.dto.CategoryResponse;
 import com.becoder.entity.Category;
-import com.becoder.exception.ExistDataException;
+
+import com.becoder.exception.ExistsDataException;
 import com.becoder.exception.ResourceNotFoundexception;
 import com.becoder.repository.CategoryRepository;
 import com.becoder.service.CategoryService;
@@ -33,56 +35,82 @@ public class CategoryServiceImpl implements CategoryService {
     private UtilValidation validation;
     
 
-    @Override
-    public Boolean saveCategoryDto(CategoryDto categoryDto) {
-    	
+//    @Override
+//    public Boolean saveCategoryDto(CategoryDto categoryDto) {
+//    	
     	//validation checking
     	
-    	validation.categoryValidation(categoryDto);
+    	//validation.categoryValidation(categoryDto);
     	
     	//chek category exist or not
-    	Boolean boolean1 = categoryRepository.existsByName(categoryDto.getName().trim());//trim()=remove extra space starting and ending text
-    	
-    	// check category exist or not
-    	Boolean exist = categoryRepository.existsByName(categoryDto.getName().trim());
-    	
-    	
-    	if (exist) {
-    				
-    // throw error
-       throw new ExistsDataException("Category already exist");
-       }
-    	
-    	
-    	Category category = Mapper.map(categoryDto, Category.class);
-    	
-
-    	if(ObjectUtils.isEmpty(category.getId())) {
-    		
-    		category.setIsDeleted(false);
-    		category.setCreatedBy(1);
-    		category.setCreatedon(new Date());
-    		
-    		
-    		
-    	}else{
-    		
-    		updatecategory(category);
-			
-		}
-    	
-    	Category savecategory = categoryRepository.save(category);
-    	
-
-//    	if(ObjectUtils.isEmpty(savecategory)) {
+//    	Boolean boolean1 = categoryRepository.existsByName(categoryDto.getName().trim());//trim()=remove extra space starting and ending text
+//    	
+//    	// check category exist or not
+//    	Boolean exist = categoryRepository.existsByName(categoryDto.getName().trim());
+//    	
+//    	
+//    	if (exist) {
+//    				
+//    // throw error
+//       throw new ExistsDataException("Category already exist");
+//       }
+//    	
+//    	
+//    	Category category = Mapper.map(categoryDto, Category.class);
+//    	
+//
+//    	if(ObjectUtils.isEmpty(category.getId())) {
 //    		
-//    		return false;
+//    		category.setIsDeleted(false);
+//    		category.setCreatedBy(1);
+//    		category.setCreatedon(new Date());
 //    		
-//    	}
-    		
-    	return savecategory != null;
-    	
-    }    	
+//    		
+//    		
+//    	}else{
+//    		
+//    		updatecategory(category);
+//			
+//		}
+//    	
+//    	Category savecategory = categoryRepository.save(category);
+//    	
+//
+////    	if(ObjectUtils.isEmpty(savecategory)) {
+////    		
+////    		return false;
+////    		
+////    	}
+//    		
+//    	return savecategory != null;
+//    	
+//    }   
+    	@Override
+    	public Boolean saveCategoryDto(CategoryDto categoryDto) {
+
+    	    validation.categoryValidation(categoryDto);
+
+    	    // INSERT case
+    	    if (ObjectUtils.isEmpty(categoryDto.getId())) {
+
+    	        if (categoryRepository.existsByName(categoryDto.getName().trim())) {
+    	            throw new ExistsDataException("Category already exist");
+    	        }
+
+    	        Category category = Mapper.map(categoryDto, Category.class);
+    	        category.setIsDeleted(false);
+    	        category.setCreatedBy(1);
+    	        category.setCreatedon(new Date());
+
+    	        return categoryRepository.save(category) != null;
+    	    }
+
+    	    // UPDATE case
+    	    Category category = Mapper.map(categoryDto, Category.class);
+    	    updatecategory(category);
+    	    return categoryRepository.save(category) != null;
+    	}
+
 
      private void updatecategory(Category category) {
 		
@@ -104,7 +132,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public List<CategoryDto> getAllcategory() {
+    public List<CategoryDto> getAllCategory() {
     
         List<Category> categories = categoryRepository.findByIsDeletedFalse();
 
