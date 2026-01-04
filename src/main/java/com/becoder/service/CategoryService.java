@@ -9,13 +9,24 @@ package com.becoder.service;
 	 
 	  public Boolean saveCategoryDto(CategoryDto categoryDto); //save Category
 		
-	   public  List<CategoryDto> getAllcategory();   //getAll Category
+	   public List<CategoryDto> getAllCategory();   //getAll Category
 
 	   public List<CategoryResponse>getIsActive();     //IsActive id,name,description show
 
 	   public CategoryDto getCategoryDtoById(Integer id) throws Exception;   //get Category Id
 	  
 	   public  Boolean deleteCategoryById(Integer id);        //delete category
+
+	
+
+	
+//	public Boolean saveCategory(CategoryDto categoryDto);
+//
+//	public List<CategoryDto> getActiveCategory();
+//
+//	public CategoryDto getCategoryById(Integer id);
+
+	
 
 
 	}
